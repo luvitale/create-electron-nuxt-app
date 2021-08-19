@@ -9,7 +9,7 @@
           Nuxt.js:
         </div>
         <div class="value">
-          {{ nuxt }}
+          {{ system.nuxt }}
         </div>
       </div>
       <div class="item">
@@ -17,7 +17,7 @@
           Vue.js:
         </div>
         <div class="value">
-          {{ vue }}
+          {{ system.vue }}
         </div>
       </div>
       <div class="item">
@@ -25,7 +25,7 @@
           Electron:
         </div>
         <div class="value">
-          {{ electron }}
+          {{ system.electron }}
         </div>
       </div>
       <div class="item">
@@ -33,7 +33,7 @@
           Node:
         </div>
         <div class="value">
-          {{ node }}
+          {{ system.node }}
         </div>
       </div>
       <div class="item">
@@ -41,7 +41,7 @@
           Chrome:
         </div>
         <div class="value">
-          {{ chrome }}
+          {{ system.chrome }}
         </div>
       </div>
       <div class="item">
@@ -49,7 +49,7 @@
           Platform:
         </div>
         <div class="value">
-          {{ platform }}
+          {{ system.platform }}
         </div>
       </div>
     </div>
@@ -60,12 +60,33 @@
 export default {
   data () {
     return {
-      chrome: process.versions.chrome,
-      electron: process.versions.electron,
-      node: process.versions.node,
-      platform: require('os').platform(),
-      vue: require('vue/package.json').version,
-      nuxt: require('nuxt/package.json').version
+      system: {
+        chrome: '',
+        electron: '',
+        node: '',
+        platform: '',
+        vue: '',
+        nuxt: ''
+      }
+    }
+  },
+
+  mounted () {
+    this.listenSystemDataReception()
+    Object.keys(this.system).forEach(element => {
+      this.getSystemInformation(element)
+    })
+  },
+
+  methods: {
+    getSystemInformation (element) {
+      window.ipcRenderer.send('get-system-information', element)
+    },
+
+    listenSystemDataReception () {
+      window.ipcRenderer.receive('get-system-information', (element, data) => {
+        this.system[element] = data
+      })
     }
   }
 }

@@ -1,6 +1,7 @@
 /* eslint-disable */
 import { EventEmitter } from 'events'
 import { BrowserWindow, app } from 'electron'
+import path from 'path'
 const DEV_SERVER_URL = process.env.DEV_SERVER_URL
 const isProduction = process.env.NODE_ENV === 'production'
 const isDev = process.env.NODE_ENV === 'development'
@@ -42,8 +43,12 @@ export default class BrowserWinHandler {
         webPreferences: {
           ...this.options.webPreferences,
           webSecurity: isProduction, // disable on dev to allow loading local resources
-          nodeIntegration: true, // allow loading modules via the require () function
-          contextIsolation: false, // https://github.com/electron/electron/issues/18037#issuecomment-806320028
+          
+          // Use pluginOptions.nodeIntegration, leave this alone
+          // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
+          nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
+          contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION,
+          preload: path.resolve(__dirname, "preload.js"),
         }
       }
     )

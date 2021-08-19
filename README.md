@@ -2,24 +2,34 @@
 
 > Electron Nuxt app template
 
-#### Build Setup
+Template of Electron Nuxt incorporating security and using IPC Renderer, IPC Main and handlers to compile successfully.
+
+It was developed following the [guide of Electron Builder security](https://nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration) to reduce risks.
+
+## Download template
+
+```
+npx degit luvitale/create-electron-nuxt-app electron-nuxt-app
+```
+
+## Build Setup
 
 ``` bash
 # install dependencies
 yarn install
 
 # serve app with hot reload
-yarn run dev
+yarn dev
 
 # build electron application for production
-yarn run build
+yarn build
 
 # yarn tests
 yarn test
 
 
 # lint all JS/Vue component files in `src/`
-yarn run lint
+yarn lint
 
 ```
 
