@@ -36,6 +36,21 @@ module.exports = {
     }
   },
   build: {
-    babel: babelConfig
+    babel: babelConfig,
+    extend (config, { isDev, isClient }) {
+      if (isClient && !isDev) {
+        config.optimization = {
+          splitChunks: {
+            minSize: 16000,
+            maxSize: 25000
+          }
+        }
+
+        config.performance = {
+          maxEntrypointSize: 1280000,
+          maxAssetSize: 1280000
+        }
+      }
+    }
   }
 }
